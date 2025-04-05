@@ -5,18 +5,46 @@ class JekyllNavigationChecker < HTMLProofer::Check
 
   def run
 
+    navYml = "navgation.yml"
+    dataPath = "./_data/"
+
+    navYmlPath = dataPath + navYml
+
+    return add_failure("file doesn't exist") if !doesFileExist(navYmlPath)
+    return add_failure("file is empty") if !doesFileHaveContent(navYmlPath)
+    return add_failure("navigation yml urls don't end in /") if true
+    return add_failure("markdown permalinks don't end in /") if true
+    return add_failure("navigation and markdown links don't align") if doesNavigationYmlMatchPermalinks(navYmlPath)
   end # end of run
 
-  def doesFileExist(file)
-    return !File.exist?(file)
+  def self.doesFileExist(file)
+    return false
   end
 
-  def doesFileHaveContent(file)
-    return File.size(file) < 1
+  def self.doesFileHaveContent(file)
+    return false
   end
 
-  def doesNavigationYmlMatchPermalinks(file)
-    navigationYmlUrls = getUrlsFromNavigationYml(file)
+  def self.getUrlsFromNavigationYml(file)
+    navUrls = Array.new
+    matchIndex = 0;
 
+    contents = File.open(pathToFile).read
+    contents.gsub!(/\r\n?/, "\n")
+    contents.each_line do |line|
+      if line.include 'url'
+        navUrls[matchIndex] = line.split(':')[1].trim
+        matchIndex += 1
+      end #end if
+    end # end do
+    return navUrls
+  end  # of getUrlsFromNavigationYml
+
+  def self.doNavigationYmlUrlsEndInSlash(file)
+    return false;
+  end
+
+  def self.doesNavigationYmlMatchPermalinks(file)
+    return false;
   end
 end
