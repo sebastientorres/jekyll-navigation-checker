@@ -1,3 +1,9 @@
+PATH
+  remote: .
+  specs:
+    jekyll-navigation-checker (0.0.1)
+      html-proofer
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -90,7 +96,11 @@ PLATFORMS
 
 DEPENDENCIES
   html-proofer
+  jekyll-navigation-checker!
   minitest
+
+RUBY VERSION
+   ruby 3.3.4p94
 
 BUNDLED WITH
    2.6.6
