@@ -19,8 +19,8 @@ jobs:
           name: Build
           command: gem build jekyll-navigation-checker.gemspec
       - run:
-        name: Publish
-        command: gem push jekyll-navigation-checker-0.0.1.gem
+          name: Publish
+          command: gem push jekyll-navigation-checker-0.0.1.gem
 workflows:
   build-deploy:
     jobs:
