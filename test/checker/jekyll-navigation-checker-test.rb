@@ -3,23 +3,45 @@
 require 'minitest/autorun'
 
 class JekyllNavigationCheckerTest < Minitest::Test
-  def getUrlsFromNavigationYml
 
-    actual = JekyllNavigationChecker.getUrlsFromNavigationYml(nil)
-    expected = Array.new('/', '/bad')
-    assert_equal actual, expected
+  URLSFROMNAVIGAITONCASES = {
+    File.new('../resources/_data/bad-links-dont-end-with-slash', 'r') => Array.new("/inspirations"),
+    File.new('../resources/_data/good-links-end-wth-slash', 'r') => Array.new("/inspirations/"),
+    File.new('../resources/_data/mixed-some-links-dont-end-with-slash', 'r') => Array.new("/about/", "/inspirations"),
+  }
+
+  def urlsFromNavigationTest
+    URLSFROMNAVIGAITONCASES.each do |input, expected|
+      actual = JekyllNavigationChecker.getUrlsFromNavigationYml(input)
+      assert_equal(actual, expected)
+    end
   end
 
+  DOESFILEEXISTCASES = {
+    File.new('../resources/_data/bad-links-dont-end-with-slash', 'r') => true,
+    File.new('../resources/_data/good-links-end-wth-slash', 'r') => true,
+    File.new('../resources/_data/mixed-some-links-dont-end-with-slash', 'r') => true,
+    File.new('../resources/_data/non-existent file', 'r') => false
+  }
+
   def doesFileExist
-    assert_equal JekyllNavigationChecker.doesFileExist(nil), true
+    DOESFILEEXISTCASES.each do |input, expected|
+      actual = JekyllNavigationChecker.doesFileExist(input)
+      assert_equal(actual, expected)
+    end
   end
 
   def doesFileHaveContents
     assert_equal JekyllNavigationChecker.doesFileHaveContent(nil), true
   end
 
+  NAVIGTIONYMLURLSCASES = DOESFILEEXISTCASES
+
   def doNavigationYmlUrlsEndInSlash
-    assert_equal JekyllNavigationChecker.doNavigationYmlUrlsEndInSlash(nil), true
+    NAVIGTIONYMLURLSCASES.each do |input, expected|
+      actual = ekyllNavigationChecker.doNavigationYmlUrlsEndInSlash(input)
+      assert_equal(actual, expected)
+    end
   end
 
   def doesNavigationYmlMatchPermalinks
