@@ -20,7 +20,7 @@ jobs:
           command: gem build jekyll-navigation-checker.gemspec
       - run:
           name: Publish
-          command: gem push jekyll-navigation-checker-0.0.1.gem
+          command: gem push jekyll-navigation-checker-*.gem
 workflows:
   build-deploy:
     jobs:
