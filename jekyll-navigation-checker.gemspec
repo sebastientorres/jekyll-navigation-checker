@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.description = "Test the navigation urls and permalinks end with / for a Jekyll site"
   s.authors     = ["Sebastien Torres"]
   s.email       = "baztorres@gmail.com"
-  s.files       = ["lib/jekyll-navigation-checker.rb"]
+  s.files       = ["lib/checker/jekyll-navigation-checker.rb"]
   s.homepage    =
     "https://rubygems.org/gems/navigation-checker"
   s.license       = "MIT"
