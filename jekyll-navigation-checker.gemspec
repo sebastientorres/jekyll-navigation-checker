@@ -9,5 +9,5 @@ Gem::Specification.new do |s|
   s.homepage    =
     "https://rubygems.org/gems/navigation-checker"
   s.license       = "MIT"
-  s.add_dependency "html-proofer"
+  s.add_dependency "html-proofer", version = "5.0.10"
 end

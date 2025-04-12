@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     jekyll-navigation-checker (0.0.1)
-      html-proofer
+      html-proofer (= 5.0.10)
 
 GEM
   remote: https://rubygems.org/
