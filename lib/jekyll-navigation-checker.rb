@@ -1,3 +1,5 @@
+require 'html-proofer'
+
 class JekyllNavigationChecker < HTMLProofer::Check
   def self.hi
     puts "hi"
@@ -29,7 +31,7 @@ class JekyllNavigationChecker < HTMLProofer::Check
     navUrls = Array.new
     matchIndex = 0;
 
-    contents = File.open(pathToFile).read
+    contents = file.read
     contents.gsub!(/\r\n?/, "\n")
     contents.each_line do |line|
       if line.include 'url'
