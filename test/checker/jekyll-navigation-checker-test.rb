@@ -35,7 +35,12 @@ class JekyllNavigationCheckerTest < Minitest::Test
     assert_equal JekyllNavigationChecker.doesFileHaveContent(nil), true
   end
 
-  NAVIGTIONYMLURLSCASES = DOESFILEEXISTCASES
+  NAVIGTIONYMLURLSCASES = {
+    File.new('../resources/_data/bad-links-dont-end-with-slash', 'r') => false,
+    File.new('../resources/_data/good-links-end-wth-slash', 'r') => true,
+    File.new('../resources/_data/mixed-some-links-dont-end-with-slash', 'r') => false,
+    File.new('../resources/_data/non-existent file', 'r') => false
+  }
 
   def doNavigationYmlUrlsEndInSlash
     NAVIGTIONYMLURLSCASES.each do |input, expected|
