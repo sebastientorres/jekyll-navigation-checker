@@ -8,6 +8,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Bundle install
+          command: bundle && bundle install
+      - run:
           name: Test
           command: rake
   deploy:
