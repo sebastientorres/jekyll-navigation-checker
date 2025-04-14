@@ -7,7 +7,7 @@ class JekyllNavigationCheckerTest < Minitest::Test
 
   URLSFROMNAVIGAITONCASES = {
     'test/resources/_data/bad-links-dont-end-with-slash' => ['/inspirations'],
-    'test/resources/_data/good-links-dont-end-with-slash' => ['/inspirations/'],
+    'test/resources/_data/good-links-end-with-slash' => ['/inspirations/'],
     'test/resources/_data/mixed-some-links-dont-end-with-slash' => ['/about/', '/inspirations']
   }
 
@@ -21,7 +21,7 @@ class JekyllNavigationCheckerTest < Minitest::Test
 
   DOESFILEEXISTCASES = {
     'test/resources/_data/bad-links-dont-end-with-slash' => true,
-    'test/resources/_data/good-links-dont-end-with-slash' => true,
+    'test/resources/_data/good-links-end-with-slash' => true,
     'test/resources/_data/mixed-some-links-dont-end-with-slash' => true,
     'test/resources/_data/non-existent file' => false
   }
@@ -40,7 +40,7 @@ class JekyllNavigationCheckerTest < Minitest::Test
 
   NAVIGTIONYMLURLSCASES = {
     'test/resources/_data/bad-links-dont-end-with-slash' => false,
-    'test/resources/_data/good-links-end-wth-slash' => true,
+    'test/resources/_data/good-links-end-with-slash' => true,
     'test/resources/_data/mixed-some-links-dont-end-with-slash' => false,
     'test/resources/_data/non-existent file' => false
   }
