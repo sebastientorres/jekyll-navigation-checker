@@ -34,8 +34,8 @@ class JekyllNavigationChecker < HTMLProofer::Check
     contents = file.read
     contents.gsub!(/\r\n?/, "\n")
     contents.each_line do |line|
-      if line.include 'url'
-        navUrls[matchIndex] = line.split(':')[1].trim
+      if String::new(line).include?( 'url')
+        navUrls[matchIndex] = line.split(':')[1].strip
         matchIndex += 1
       end #end if
     end # end do
