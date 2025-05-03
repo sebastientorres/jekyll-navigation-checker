@@ -24,7 +24,7 @@ class JekyllNavigationChecker < HTMLProofer::Check
   end
 
   def self.doesFileHaveContent(file)
-    return false
+    return nil != file ? file.size > 1 : false;
   end
 
   def self.getUrlsFromNavigationYml(file)
@@ -43,10 +43,15 @@ class JekyllNavigationChecker < HTMLProofer::Check
   end  # of getUrlsFromNavigationYml
 
   def self.doNavigationYmlUrlsEndInSlash(file)
-    return false;
+    urls = getUrlsFromNavigationYml(file)
+
+    urls.each {|url| if !url.end_with?('/') then return false end }
+    return true;
   end
 
   def self.doesNavigationYmlMatchPermalinks(file)
+    navigationYml = getUrlsFromNavigationYml(file)
     return false;
   end
+
 end
