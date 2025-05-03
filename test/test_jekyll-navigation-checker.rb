@@ -63,19 +63,24 @@ class JekyllNavigationCheckerTest < Minitest::Test
   end
 
   def test_doesNavigationYmlMatchPermalinks
-
     describe "Do navigation.yml URls end in /" do
-      parameterized(:path, :expected) do
-        input { ['test/resources/_data/bad-links-dont-end-with-slash' , false] }
-        input { ['test/resources/_data/good-links-end-with-slash', true] }
-        input { ['test/resources/_data/mixed-some-links-dont-end-with-slash', false] }
-        input { ['test/resources/_data/non-existent-file', false] }
+      dataPath = 'test/resources/_data/'
+      postsPath = 'test/resources/_posts/'
+
+      someMatch = 'some-match/'
+      allMatch = 'all-match/'
+      noneMatch = 'non-match/'
+
+      parameterized(:navYmlFilePath, :postsPathParam, :expected) do
+        input { [dataPath + someMatch +'nav.yml', postsPath + someMatch , false] }
+        input { [dataPath + allMatch + 'nav.yml', postsPath + allMatch, true] }
+        input { [dataPath + noneMatch +'nav.yml', postsPath + noneMatch, false] }
       end
     end
 
     it "" do
-      file = File.new(path, 'r')
-      assert_equal JekyllNavigationChecker.doesNavigationYmlMatchPermalinks(file), true
+      file = File.new(navYmlFilePath, 'r')
+      assert_equal JekyllNavigationChecker.doesNavigationYmlMatchPermalinks(file, postsPathParam), true
     end
   end
 
