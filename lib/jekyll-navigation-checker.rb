@@ -25,16 +25,18 @@ class JekyllNavigationChecker < HTMLProofer::Check
     begin
       file = File.new(path, 'r')
       return nil != file
-    rescue
+    rescue Exception => e
+      puts "doesFileExist encountered ", e
       return false
     end
   end
 
-  def self.doesFileHaveContent(file)
+  def self.doesFileHaveContent(path)
     begin
       file = File.new(path, 'r')
-      return nil != file ? file.size > 0 : false;
-    rescue
+      return nil != file.size && file.size > 0
+    rescue Exception => e
+      puts "doesFileHaveContent encountered:", e
       return false
     end
   end
