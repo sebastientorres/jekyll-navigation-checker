@@ -77,22 +77,21 @@ class JekyllNavigationCheckerTest < Minitest::Test
     assert_equal false, JekyllNavigationChecker.doesFileHaveContent(nil)
   end
 
-  # def test_doNavigationYmlUrlsEndInSlash
-  #   describe "Do navigation.yml URls end in /" do
-  #     parameterized(:path, :expected) do
-  #       input { ['test/resources/_data/bad-links-dont-end-with-slash' , false] }
-  #       input { ['test/resources/_data/good-links-end-with-slash', true] }
-  #       input { ['test/resources/_data/mixed-some-links-dont-end-with-slash', false] }
-  #       input { ['test/resources/_data/non-existent-file', false] }
-  #     end
-  #
-  #     it "Tests things" do
-  #       file = File.new(path, 'r')
-  #       actual = JekyllNavigationChecker.doNavigationYmlUrlsEndInSlash(file)
-  #       assert_equal(actual, expected)
-  #     end
-  #   end
-  # end
+  def test_doNavigationYmlUrlsEndInSlash_bad
+    actual = JekyllNavigationChecker.doNavigationYmlUrlsEndInSlash('test/resources/_data/bad-links-dont-end-with-slash')
+    assert_equal false, actual
+  end
+
+  def test_doNavigationYmlUrlsEndInSlash_good
+    actual = JekyllNavigationChecker.doNavigationYmlUrlsEndInSlash('test/resources/_data/good-links-end-with-slash')
+    assert_equal true, actual
+  end
+
+  def test_doNavigationYmlUrlsEndInSlash_mixed
+    actual = JekyllNavigationChecker.doNavigationYmlUrlsEndInSlash('test/resources/_data/mixed-some-links-dont-end-with-slash')
+    assert_equal false, actual
+  end
+
 
   # def test_doesNavigationYmlMatchPermalinks
   #   someMatch = 'some-match/'
