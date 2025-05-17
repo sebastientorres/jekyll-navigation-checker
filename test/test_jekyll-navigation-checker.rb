@@ -6,39 +6,67 @@ require 'parameterized_testing/minitest/spec'
 
 class JekyllNavigationCheckerTest < Minitest::Test
 
-  def test_urls
-    describe "URLs from navigation.yml" do
-      parameterized(:path, :expected) do
-        input { ['test/resources/_data/bad-links-dont-end-with-slash', ['/inspirations']] }
-        input { ['test/resources/_data/good-links-end-with-slash', ['/inspirations/']] }
-        input { ['test/resources/_data/mixed-some-links-dont-end-with-slash', ['/about/', '/inspirations']] }
-
-        it "tests retrieving url" do
-          file = File.new(path, 'r')
-          actual = JekyllNavigationChecker.getUrlsFromNavigationYml(file)
-          _(actual).must_equal(expected)
-        end
-      end
-    end
+  def test_getUrlsFromNavFile_doesntEndWithSlashes
+    file = File.new('test/resources/_data/bad-links-dont-end-with-slash', 'r')
+    actual = JekyllNavigationChecker.getUrlsFromNavigationYml(file)
+    assert_equal ['/inspirations'], actual
   end
 
+  def test_getUrlsFromNavFile_EndsWithSlashes
+    file = File.new('test/resources/_data/good-links-end-with-slash', 'r')
+    actual = JekyllNavigationChecker.getUrlsFromNavigationYml(file)
+    assert_equal ['/inspirations/'], actual
+  end
 
-  def test_doesFileExist
-    describe "Does file exist" do
-      parameterized(:path, :expected) do
-        input { ['test/resources/_data/bad-links-dont-end-with-slash',true,] }
-        input { ['test/resources/_data/good-links-end-with-slash', true] }
-        input { ['test/resources/_data/mixed-some-links-dont-end-with-slash', true] }
-        input { ['test/resources/_data/non-existent file', false] }
-      end
+  def test_getUrlsFromNavFile_mixed_someDontEndWithSlash
+    file = File.new('test/resources/_data/mixed-some-links-dont-end-with-slash', 'r')
+    actual = JekyllNavigationChecker.getUrlsFromNavigationYml(file).sort
+    assert_equal ['/about/', '/inspirations'], actual
+  end
 
-      it "Tests the provided file exists" do
-        file = File.new(path, 'r')
-        actual = JekyllNavigationChecker.doesFileExist(file)
-        assert_equal(actual, expected)
-      end
+  def test_doesFileExist_bad
+    actual = JekyllNavigationChecker.doesFileExist('test/resources/_data/bad-links-dont-end-with-slash')
+    assert_equal true, actual
+  end
 
-    end
+  def test_doesFileExist_good
+    actual = JekyllNavigationChecker.doesFileExist('test/resources/_data/good-links-end-with-slash')
+    assert_equal true, actual
+  end
+
+  def test_doesFileExist_mixed
+    actual = JekyllNavigationChecker.doesFileExist('test/resources/_data/mixed-some-links-dont-end-with-slash')
+    assert_equal true, actual
+  end
+
+  def test_doesFileExist_nonExistentFile
+    actual = JekyllNavigationChecker.doesFileExist('test/resources/_data/non-existent-file')
+    assert_equal false, actual
+  end
+
+  def test_doesFileHaveContents_bad
+    actual = JekyllNavigationChecker.doesFileHaveContent('test/resources/_data/bad-links-dont-end-with-slash')
+    assert_equal true, actual
+  end
+
+  def test_doesFileHaveContents_good
+    actual = JekyllNavigationChecker.doesFileHaveContent('test/resources/_data/good-links-end-with-slash')
+    assert_equal true, actual
+  end
+
+  def test_doesFileHaveContents_mixed
+    actual = JekyllNavigationChecker.doesFileHaveContent('test/resources/_data/mixed-some-links-dont-end-with-slash')
+    assert_equal true, actual
+  end
+
+  def test_doesFileHaveContents_nonExistentFile
+    actual = JekyllNavigationChecker.doesFileHaveContent('test/resources/_data/non-existent-file')
+    assert_equal false, actual
+  end
+
+  def test_doesFileHaveContents_emptyFile
+    actual = JekyllNavigationChecker.doesFileHaveContent('test/resources/_data/empty-file')
+    assert_equal false, actual
   end
 
   def test_emptyFileDoesntHaveContents
@@ -63,25 +91,23 @@ class JekyllNavigationCheckerTest < Minitest::Test
   end
 
   def test_doesNavigationYmlMatchPermalinks
-    describe "Do navigation.yml URls end in /" do
-      dataPath = 'test/resources/_data/'
-      postsPath = 'test/resources/_posts/'
+    someMatch = 'some-match/'
+    allMatch = 'all-match/'
+    noneMatch = 'non-match/'
 
-      someMatch = 'some-match/'
-      allMatch = 'all-match/'
-      noneMatch = 'non-match/'
+    describe "Do navigation.yml URls end in slash" do
+      parameterized(:scenario, :expected) do
+        input { [someMatch, false] }
+        input { [allMatch, true] }
+        input { [noneMatch, false] }
+      end
 
-      parameterized(:navYmlFilePath, :postsPathParam, :expected) do
-        input { [dataPath + someMatch +'nav.yml', postsPath + someMatch , false] }
-        input { [dataPath + allMatch + 'nav.yml', postsPath + allMatch, true] }
-        input { [dataPath + noneMatch +'nav.yml', postsPath + noneMatch, false] }
+      it "nav urls and page permalinks match" do
+        dataPath = 'test/resources/_data/'
+        postsPath = 'test/resources/_posts/'
+        file = File.new(dataPath + scenario, 'r')
+        assert_equal expected, JekyllNavigationChecker.doesNavigationYmlMatchPermalinks(file, postsPath + scenario)
       end
     end
-
-    it "" do
-      file = File.new(navYmlFilePath, 'r')
-      assert_equal JekyllNavigationChecker.doesNavigationYmlMatchPermalinks(file, postsPathParam), true
-    end
   end
-
 end
