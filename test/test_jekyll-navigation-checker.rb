@@ -44,6 +44,11 @@ class JekyllNavigationCheckerTest < Minitest::Test
     assert_equal false, actual
   end
 
+  def test_doesFileExist_emptyFile
+    actual = JekyllNavigationChecker.doesFileExist('test/resources/_data/empty-file')
+    assert_equal true, actual
+  end
+
   def test_doesFileHaveContents_bad
     actual = JekyllNavigationChecker.doesFileHaveContent('test/resources/_data/bad-links-dont-end-with-slash')
     assert_equal true, actual
