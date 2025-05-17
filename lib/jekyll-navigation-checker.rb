@@ -41,7 +41,8 @@ class JekyllNavigationChecker < HTMLProofer::Check
     end
   end
 
-  def self.getUrlsFromNavigationYml(file)
+  def self.getUrlsFromNavigationYml(path)
+    file = File.new(path, 'r')
     navUrls = Array.new
     matchIndex = 0;
 
@@ -56,7 +57,8 @@ class JekyllNavigationChecker < HTMLProofer::Check
     return navUrls
   end  # of getUrlsFromNavigationYml
 
-  def self.doNavigationYmlUrlsEndInSlash(file)
+  def self.doNavigationYmlUrlsEndInSlash(path)
+    file = File.new(path, 'r')
     urls = getUrlsFromNavigationYml(file)
 
     urls.each {|url| if !url.end_with?('/') then return false end }
